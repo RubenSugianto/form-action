@@ -1,9 +1,11 @@
+import { useActionState } from 'react';
+
 import { isEmail, isNotEmpty, isEqualToOtherValue, hasMinLength } from '../util/validation.js';
 
 export default function Signup() {
   // karena kita pake action, maka dia bukan ngirim event tapi formData
   //  form data ini mirip aja kayak event.target gitu, isi formnya
-  function signupAction(formData) {
+  function signupAction(prevFormState, formData) {
     // get disini itu harus sesuai sama NAME di form
     // maka dari itu wajib ada
     const email = formData.get('email');
@@ -44,14 +46,24 @@ export default function Signup() {
     if(aquisitionChannel.length === 0) {
       errors.push('Please select at least one acquisition channel.');
     }
-    console.log(enteredEmail);
+
+    if(errors.length > 0) {
+      return {errors};
+    }
+    
+    return {errors: null}
   }
+
+  // formAction itu kayak balikan dari signupAction
+  // signupAction itu function yg kt buat
+  // bisa tambahin 1 lg pending itu kalo async aja
+  const [formState, formAction] = useActionState(signupAction, {errors: null});
 
   return (
     // dalam form itu biasanya action itu berisi link API yang akan dikirim datanya
     // action disini itu secara otomatis GAAKAN refresh page
     // 
-    <form action={signupAction}>
+    <form action={formAction}>
       <h2>Welcome on board!</h2>
       <p>We just need a little bit of data from you to get you started 🚀</p>
 
@@ -135,6 +147,14 @@ export default function Signup() {
           agree to the terms and conditions
         </label>
       </div>
+
+      {formState.errors && (
+        <ul className="error">
+          {formState.errors.map((error) => (
+            <li key={error}>{error}</li>
+          ))}
+        </ul>
+      )}
 
       <p className="form-actions">
         <button type="reset" className="button button-flat">
