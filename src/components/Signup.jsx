@@ -1,10 +1,49 @@
+import { isEmail, isNotEmpty, isEqualToOtherValue, hasMinLength } from '../util/validation.js';
+
 export default function Signup() {
   // karena kita pake action, maka dia bukan ngirim event tapi formData
   //  form data ini mirip aja kayak event.target gitu, isi formnya
   function signupAction(formData) {
     // get disini itu harus sesuai sama NAME di form
     // maka dari itu wajib ada
-    const enteredEmail = formData.get('email');
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const confirmPassword = formData.get('confirm-password');
+    const firstName = formData.get('first-name');
+    const lastName = formData.get('last-name');
+    const role = formData.get('role');
+    const terms = formData.get('terms');
+    const aquisitionChannel = formData.getAll('acquisition');
+
+    let errors = [];
+
+    if(!isEmail(email)) {
+      errors.push('Invalid email address');
+    } 
+
+    if(!isNotEmpty(password) || !hasMinLength(password, 6)) {
+      errors.push('You must provide a password with at least six characters.');
+    }
+
+    if(!isEqualToOtherValue(password, confirmPassword)) {
+      errors.push('Passwords do not match.');
+    }
+
+    if(!isNotEmpty(firstName) && !isNotEmpty(lastName)) {
+      errors.push('Please provide both your first name and last name.');
+    }
+
+    if(!isNotEmpty(role)) {
+      errors.push('Please select a role.');
+    }
+
+    if(!terms) {
+      errors.push('You must agree to the terms and conditions.');
+    }
+    
+    if(aquisitionChannel.length === 0) {
+      errors.push('Please select at least one acquisition channel.');
+    }
     console.log(enteredEmail);
   }
 
