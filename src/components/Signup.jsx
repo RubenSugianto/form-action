@@ -2,8 +2,7 @@ import { useActionState } from 'react';
 
 import { isEmail, isNotEmpty, isEqualToOtherValue, hasMinLength } from '../util/validation.js';
 
-export default function Signup() {
-  // karena kita pake action, maka dia bukan ngirim event tapi formData
+// karena kita pake action, maka dia bukan ngirim event tapi formData
   //  form data ini mirip aja kayak event.target gitu, isi formnya
   function signupAction(prevFormState, formData) {
     // get disini itu harus sesuai sama NAME di form
@@ -67,6 +66,7 @@ export default function Signup() {
     return {errors: null}
   }
 
+export default function Signup() {
   // formAction itu kayak balikan dari signupAction
   // signupAction itu function yg kt buat
   // bisa tambahin 1 lg pending itu kalo async aja
