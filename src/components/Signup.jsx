@@ -1,6 +1,18 @@
 export default function Signup() {
+  // karena kita pake action, maka dia bukan ngirim event tapi formData
+  //  form data ini mirip aja kayak event.target gitu, isi formnya
+  function signupAction(formData) {
+    // get disini itu harus sesuai sama NAME di form
+    // maka dari itu wajib ada
+    const enteredEmail = formData.get('email');
+    console.log(enteredEmail);
+  }
+
   return (
-    <form>
+    // dalam form itu biasanya action itu berisi link API yang akan dikirim datanya
+    // action disini itu secara otomatis GAAKAN refresh page
+    // 
+    <form action={signupAction}>
       <h2>Welcome on board!</h2>
       <p>We just need a little bit of data from you to get you started 🚀</p>
 
